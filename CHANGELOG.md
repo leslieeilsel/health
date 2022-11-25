@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.0.5 - 2022-11-25
+- Improve failing messages for the HealthPanel checker
+
+## 2.0.4 - 2022-11-24
+- Fix Laravel Cache::remember() to use seconds instead
+
+## 2.0.3 - 2022-11-23
+- Allow disabling notifications by the caller (web,console)
+
+## 2.0.2 - 2022-11-14
+- Http/Https checker: allow setting the URL as a separate object to fix a YAML limitation
+
+## 2.0.1 - 2022-11-14
+- Queue checker: allow defining the queue name on config 
+
+## 2.0.0 - 2022-11-14
+- Bump Laravel version minimum to 8.0 and PHP to 7.3
+
+## 1.1.6 - 2022-11-14
+- Fix not all parameters being sent to Guzzle for the HealthPanel checker
+
+## 1.1.5 - 2022-11-14
+- Allow checking if the API response is a valid JSON
+
 ## 1.1.4 - 2022-11-07
 - Createad a HealthPanel checker to allow people to create a panels of remote panels
 - Added a "link" property that will open a new page when clicked

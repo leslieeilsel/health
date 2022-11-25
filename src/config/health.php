@@ -146,9 +146,9 @@ return [
         | Options:
         |   0 = Cache Forever
         |   false = Disables caching
-        |   30 = (integer) Minutes to cache
+        |   30 = (integer) Seconds to cache
         */
-        'minutes' => config('app.debug') === true ? false : 1,
+        'seconds' => config('app.debug') === true ? false : 60,
     ],
 
     'database' => [
@@ -197,6 +197,11 @@ return [
             'resource' => false,
         ],
 
+        'notify_from' => [
+            'web' => false,
+            'console' => true,
+        ],
+
         'subject' => 'Health Status',
 
         'action-title' => 'View App Health',
@@ -218,7 +223,7 @@ return [
         ],
 
         'users' => [
-            'model' => App\User::class,
+            'model' => App\Models\User::class,
 
             'emails' => ['admin@mydomain.com'],
         ],

@@ -42,7 +42,7 @@ class Http extends Base
             foreach ($this->getResourceUrlArray() as $url) {
                 [$url, $parameters] = $this->parseConfigUrl($url);
 
-                [$healthy, $message] = $this->checkWebPage(
+                [$healthy, $message] = $this->checkUrl(
                     $this->makeUrlWithScheme($url, $this->secure),
                     $this->secure,
                     $parameters
@@ -82,7 +82,7 @@ class Http extends Base
      * @param  bool  $ssl
      * @return mixed
      */
-    private function checkWebPage($url, $ssl = false, $parameters = [])
+    private function checkUrl($url, $ssl = false, $parameters = [])
     {
         try {
             $success = $this->requestSuccessful($url, $ssl, $parameters);
@@ -217,7 +217,19 @@ class Http extends Base
             throw new \Exception((string) $response->getBody());
         }
 
-        return ! $this->requestTimeout();
+        if ($this->requestTimeout()) {
+            return false;
+        }
+
+        if ($parameters['is_json'] ?? false) {
+            json_decode($response->getBody());
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception((string) 'Downloaded file is not a valid JSON. Error: '.json_last_error());
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -243,9 +255,9 @@ class Http extends Base
 
         $url = array_keys($data)[0];
 
-        $parameters = $data[$url];
+        $parameters = $data[$url] ?? $data;
 
-        $url = isset($parameters['url']) ? $parameters['url'] : $url;
+        $url = $parameters['url'] ?? $url;
 
         return [$url, $parameters];
     }
